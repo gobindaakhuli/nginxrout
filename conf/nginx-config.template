@@ -110,6 +110,18 @@ http {
     }
     {{ end }}
   }
+  upstream web_backend {
+    server http://mynodeapp-mynodeproject.127.0.0.1.nip.io/
+    server http://mynodeapp-mynodeproject.127.0.0.1.nip.io/basement
+  }
+  server {
+    listen 80;
+    
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://web_backend;
+    }
+  }
 
   # default server
   server {
